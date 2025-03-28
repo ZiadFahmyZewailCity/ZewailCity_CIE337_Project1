@@ -75,7 +75,7 @@ m2Mask = t_m2 <= m2T_cutoff;
 
 figure
 plot(t_m2(m2Mask),m2Complete(m2Mask));
-title('m1(t) (QAM)')
+title('m2(t) (QAM)')
 xlabel('Time (msec)');
 ylabel('m2(t)');
 grid on 
