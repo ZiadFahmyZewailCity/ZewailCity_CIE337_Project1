@@ -7,11 +7,11 @@ clear, clc
 % 1st: Time Axis Generation
 % ================================
 numPoints = 100e3;
-timeEnd = 6e-3;
+timeEnd = 600e-3;
 timePointEvery = timeEnd / (numPoints - 1);
 timeAxis = linspace(0, timeEnd, numPoints);
 
-timeCutoff = 2e-3;
+timeCutoff = 10e-3;
 mask = timeAxis <= timeCutoff;
 
 % ================================
@@ -32,7 +32,7 @@ m1 = Am1 * sawtooth(2 * pi * fm1 * m1TimeAxis, 0);
 figure;
 plot(timeAxis(mask), m1(mask));
 title('Part A - m1(t) Graph');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m1(t)');
 grid on;
 m1numberPointXaxis = 11;
@@ -78,7 +78,7 @@ end
 figure;
 plot(timeAxis(mask), m2(mask));
 title('Part A - m2(t) Graph');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m2(t)');
 grid on;
 m2numberPointXaxis = 5;
@@ -99,7 +99,7 @@ s = Ac * m1 .* cos(2 * pi * fc * timeAxis) + Ac * m2 .* sin(2 * pi * fc * timeAx
 figure;
 plot(timeAxis(mask), s(mask));
 title('s(t) - QAM Modulated Signal');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('s(t)');
 grid on;
 
@@ -112,22 +112,24 @@ m1_extracted = (2/Ac) * s .* cos(2 * pi * fc * timeAxis);
 m2_extracted = (2/Ac) * s .* sin(2 * pi * fc * timeAxis);
 
 % Low-pass filter to remove high-frequency components
-[b, a] = butter(5, (fc/10)/(numPoints/2));
-m1_extracted = filtfilt(b, a, m1_extracted);
-m2_extracted = filtfilt(b, a, m2_extracted);
+fc_LPF = fc/10;
+Fs = 1/timePointEvery;
+
+m1_extracted = lowpass(m1_extracted,fc_LPF,Fs);
+m2_extracted = lowpass(m2_extracted,fc_LPF,Fs);
 
 % Plot extracted signals
 figure;
 plot(timeAxis(mask), m1_extracted(mask));
 title('Extracted m1(t)');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m1(t)');
 grid on;
 
 figure;
 plot(timeAxis(mask), m2_extracted(mask));
 title('Extracted m2(t)');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m2(t)');
 grid on;
 
@@ -141,20 +143,20 @@ s_phase_shifted = Ac * m1 .* cos(2 * pi * fc * timeAxis + pi/3) + Ac * m2 .* sin
 m1_extracted_phase = (2/Ac) * s_phase_shifted .* cos(2 * pi * fc * timeAxis);
 m2_extracted_phase = (2/Ac) * s_phase_shifted .* sin(2 * pi * fc * timeAxis);
 
-m1_extracted_phase = filtfilt(b, a, m1_extracted_phase);
-m2_extracted_phase = filtfilt(b, a, m2_extracted_phase);
+m1_extracted_phase = lowpass(m1_extracted_phase,fc_LPF,Fs);
+m2_extracted_phase = lowpass(m2_extracted_phase,fc_LPF,Fs);
 
 figure;
 plot(timeAxis(mask), m1_extracted_phase(mask));
 title('Extracted m1(t) with Phase Shift');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m1(t)');
 grid on;
 
 figure;
 plot(timeAxis(mask), m2_extracted_phase(mask));
 title('Extracted m2(t) with Phase Shift');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m2(t)');
 grid on;
 
@@ -165,20 +167,21 @@ s_freq_shifted = Ac * m1 .* cos(2 * pi * 2.02 * fc * timeAxis) + Ac * m2 .* sin(
 m1_extracted_freq = (2/Ac) * s_freq_shifted .* cos(2 * pi * fc * timeAxis);
 m2_extracted_freq = (2/Ac) * s_freq_shifted .* sin(2 * pi * fc * timeAxis);
 
-m1_extracted_freq = filtfilt(b, a, m1_extracted_freq);
-m2_extracted_freq = filtfilt(b, a, m2_extracted_freq);
+
+m1_extracted_freq = lowpass(m1_extracted_freq,fc_LPF*2,Fs);
+m2_extracted_freq = lowpass(m2_extracted_freq,fc_LPF*2,Fs);
 
 figure;
 plot(timeAxis(mask), m1_extracted_freq(mask));
 title('Extracted m1(t) with Frequency Shift');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m1(t)');
 grid on;
 
 figure;
 plot(timeAxis(mask), m2_extracted_freq(mask));
 title('Extracted m2(t) with Frequency Shift');
-xlabel('Time (msec)');
+xlabel('Time (sec)');
 ylabel('m2(t)');
 grid on;
 
