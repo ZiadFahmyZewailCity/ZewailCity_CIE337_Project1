@@ -46,6 +46,21 @@ kf2 = 1000;
 int_m2 = cumtrapz(t2, m2Complete);
 FM2 = Ac * cos(2*pi*fc*t2 + kf2 * int_m2);
 
+%Plotting the S2(t) and S3(t) Frequency modulated signals
+figure;
+plot(t1(1:1000), FM1(1:1000));
+title('Frequency Modulated signal s2(t)');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
+grid on;
+
+figure;
+plot(t1(1:1000), FM2(1:1000));
+title('Frequency Modulated signal s3(t)');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
+grid on;
+
 %Plotting for illustration (m1(t) & s1(t))
 figure;
 subplot(3,1,1);
