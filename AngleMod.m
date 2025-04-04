@@ -21,7 +21,7 @@ for kp = 1:length(modindex)
     xlabel('Time (s)');
     ylabel('Amplitude (V)');
 end
-%%
+
 %PART B.2__Frequency Modulation
 
 % Time for m1
@@ -46,25 +46,39 @@ kf2 = 1000;
 int_m2 = cumtrapz(t2, m2Complete);
 FM2 = Ac * cos(2*pi*fc*t2 + kf2 * int_m2);
 
+figure;
+plot(t1(1:1000), FM1(1:1000));
+title('Frequency Modulated signal s3(t)');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
+grid on;
+
+figure;
+plot(t1(1:1000), FM2(1:1000));
+title('Frequency Modulated signal s2(t)');
+xlabel('Time (s)');
+ylabel('Amplitude (V)');
+grid on;
+
 %Plotting for illustration (m1(t) & s1(t))
 figure;
 subplot(3,1,1);
 plot(t1(1:1000), m1(1:1000));
-title('Message Signal m1(t) (Volt)');
+title('Message Signal m1(t)');
 xlabel('Time (s)');
-ylabel('Amplitude');
+ylabel('Amplitude (V)');
 grid on;
 
 subplot(3,1,2);
 plot(t1(1:1000), int_m1(1:1000));
-title('Integral of m1(t) (Volt)');
+title('Integral of m1(t)');
 xlabel('Time (s)');
 ylabel('Integral Value');
 grid on;
 
 subplot(3,1,3);
 plot(t1(1:1000), FM1(1:1000));
-title('Frequency Modulated signal s1(t)');
+title('Frequency Modulated signal s3(t)');
 xlabel('Time (s)');
 ylabel('Amplitude (V)');
 grid on;
@@ -80,7 +94,7 @@ grid on;
 
 subplot(3,1,2);
 plot(t2(1:2000), int_m2(1:2000));
-title('Integral of m2(t) (Volt)');
+title('Integral of m2(t)');
 xlabel('Time (s)');
 ylabel('Integral Value');
 grid on;
